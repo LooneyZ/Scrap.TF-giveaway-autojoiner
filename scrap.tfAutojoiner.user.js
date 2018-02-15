@@ -5,6 +5,8 @@
 // @description  Automatical join for scrap giveaways 
 // @author       Looney
 // @match        https://scrap.tf/*
+// @updateURL    https://raw.githubusercontent.com/LooneyZ/Scrap.TF-giveaway-autojoiner/master/scrap.tfAutojoiner.user.js
+// @downloadURL  https://raw.githubusercontent.com/LooneyZ/Scrap.TF-giveaway-autojoiner/master/scrap.tfAutojoiner.user.js
 // @grant        none
 // ==/UserScript==
 
