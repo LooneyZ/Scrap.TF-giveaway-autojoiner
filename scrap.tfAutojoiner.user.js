@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Scrap.tf autojoiner
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  Automatical join for scrap giveaways 
 // @author       Looney
 // @match        https://scrap.tf/raffles*
@@ -17,8 +17,26 @@
     function scrollIt(){
         var scrollText = document.getElementsByClassName("pag-loading")[0].innerHTML;
         if("That's all, no more!" != scrollText){
-            window.scrollTo(0,1000000000);
-            setTimeout(scrollIt,5000);
+            var amount = document.getElementsByClassName('panel')[0].getElementsByClassName('panel-raffle').length;
+			
+			function nextScrap(){
+				var newamount = document.getElementsByClassName('panel')[0].getElementsByClassName('panel-raffle').length;
+				if(amount != newamount) {
+					amount = newamount;
+					loadRaffles();
+				}
+				else {
+					console.log(amount);
+					startJoin();
+				}
+			}
+
+			function loadRaffles(){
+				ScrapTF.Raffles.Pagination.LoadNext();
+				setTimeout(nextScrap, 5000);
+			}
+			
+			loadRaffles();
         }
         else startJoin();
     }
