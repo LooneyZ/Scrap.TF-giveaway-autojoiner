@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Scrap.tf autojoiner
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Automatical join for scrap giveaways 
 // @author       Looney
 // @match        https://scrap.tf/raffles*
@@ -70,6 +70,7 @@
 
     function enterRaffle(){
         if(typeof document.getElementById('raffle-enter') !== 'undefined'){
+			if(null == document.getElementById('raffle-enter')) window.close();
             var butvalue = document.getElementById('raffle-enter').innerText;
             if(" Enter Raffle" == butvalue){
                 document.getElementById('raffle-enter').click();
