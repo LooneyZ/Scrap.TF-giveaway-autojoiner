@@ -1,42 +1,34 @@
 // ==UserScript==
 // @name         Scrap.tf autojoiner
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Automatical join for scrap giveaways 
 // @author       Looney
-// @match        https://scrap.tf/*
+// @match        https://scrap.tf/raffles*
 // @updateURL    https://raw.githubusercontent.com/LooneyZ/Scrap.TF-giveaway-autojoiner/master/scrap.tfAutojoiner.user.js
 // @downloadURL  https://raw.githubusercontent.com/LooneyZ/Scrap.TF-giveaway-autojoiner/master/scrap.tfAutojoiner.user.js
 // @grant        none
 // ==/UserScript==
 
 (function() {
-
-    // Your code here...
-
+	
     mainer();
+	
     function scrollIt(){
         var scrollText = document.getElementsByClassName("pag-loading")[0].innerHTML;
         if("That's all, no more!" != scrollText){
             window.scrollTo(0,1000000000);
             setTimeout(scrollIt,5000);
         }
-        else {
-
-            loo();
-        }
+        else startJoin();
     }
 
-
-
-    function loo(){
-
+    function startJoin(){
         var panel = document.getElementsByClassName('panel')[0];
         var raffles = panel.getElementsByClassName('panel-raffle');
-
         var amount = raffles.length;
-
         var i = 0;
+		
         function getRaffle(){
             if(amount > i){
                 var opacity = window.getComputedStyle(raffles[i]).getPropertyValue("opacity");
@@ -55,39 +47,34 @@
                 else{
                     ++i;
                     getRaffle();
-                }
-                
+                }   
             }
+			else setTimeout(function(){location.reload();}, 300000);
         }
+		
         getRaffle();
     }
 
     function mainer(){
-
-        if(window.location.href !== "https://scrap.tf/raffles/ending" && window.location.href !== "https://scrap.tf/raffles")
-        {
-            if(window.location.hash == "#join")
-            {
+		var currenthref = window.location.href;
+		if("/" === currenthref[currenthref.length-1]) currenthref.slice(0,-1);
+        if("https://scrap.tf/raffles/ending" !== currenthref && "https://scrap.tf/raffles" !== currenthref){
+            if(window.location.hash == "#join"){
                 console.log("Entering started");
                 enterRaffle();
             }
-            else
-            {
-                window.close();
-            }
+            else window.close();
         }
         else scrollIt();
     }
 
     function enterRaffle(){
-
         if(typeof document.getElementById('raffle-enter') !== 'undefined'){
             var butvalue = document.getElementById('raffle-enter').innerText;
             if(" Enter Raffle" == butvalue){
                 document.getElementById('raffle-enter').click();
             }
             else if(" Leave Raffle" == butvalue) window.close();
-
         }
         else setTimeout(enterRaffle,1000);
     }
