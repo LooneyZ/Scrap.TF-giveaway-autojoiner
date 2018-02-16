@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Scrap.tf autojoiner
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Automatical join for scrap giveaways 
 // @author       Looney
 // @match        https://scrap.tf/raffles*
@@ -57,7 +57,7 @@
 
     function mainer(){
 		var currenthref = window.location.href;
-		if("/" === currenthref[currenthref.length-1]) currenthref.slice(0,-1);
+		if("/" === currenthref[currenthref.length-1]) currenthref = currenthref.slice(0,-1);
         if("https://scrap.tf/raffles/ending" !== currenthref && "https://scrap.tf/raffles" !== currenthref){
             if(window.location.hash == "#join"){
                 console.log("Entering started");
