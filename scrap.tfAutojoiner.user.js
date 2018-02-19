@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Scrap.tf autojoiner
 // @namespace    http://tampermonkey.net/
-// @version      0.5
-// @description  Automatical join for scrap giveaways 
+// @version      0.6
+// @description  Automatical join for scrap giveaways
 // @author       Looney
 // @match        https://scrap.tf/raffles*
 // @updateURL    https://raw.githubusercontent.com/LooneyZ/Scrap.TF-giveaway-autojoiner/master/scrap.tfAutojoiner.user.js
@@ -11,34 +11,23 @@
 // ==/UserScript==
 
 (function() {
-	
-    mainer();
-	
-    function scrollIt(){
-        var scrollText = document.getElementsByClassName("pag-loading")[0].innerHTML;
-        if("That's all, no more!" != scrollText){
-            var amount = document.getElementsByClassName('panel')[0].getElementsByClassName('panel-raffle').length;
-			
-			function nextScrap(){
-				var newamount = document.getElementsByClassName('panel')[0].getElementsByClassName('panel-raffle').length;
-				if(amount != newamount) {
-					amount = newamount;
-					loadRaffles();
-				}
-				else {
-					console.log(amount);
-					startJoin();
-				}
-			}
 
-			function loadRaffles(){
-				ScrapTF.Raffles.Pagination.LoadNext();
-				setTimeout(nextScrap, 5000);
-			}
-			
-			loadRaffles();
-        }
-        else startJoin();
+    mainer();
+
+    function scrollIt(){
+
+		function nextScrap(){
+			var scrollText = document.getElementsByClassName("pag-loading")[0].innerHTML;
+			if("That's all, no more!" != scrollText) loadRaffles();
+			else startJoin();
+		}
+
+		function loadRaffles(){
+			ScrapTF.Raffles.Pagination.LoadNext();
+			setTimeout(nextScrap, 5000);
+		}
+
+		nextScrap();
     }
 
     function startJoin(){
@@ -46,7 +35,7 @@
         var raffles = panel.getElementsByClassName('panel-raffle');
         var amount = raffles.length;
         var i = 0;
-		
+
         function getRaffle(){
             if(amount > i){
                 var opacity = window.getComputedStyle(raffles[i]).getPropertyValue("opacity");
@@ -65,11 +54,11 @@
                 else{
                     ++i;
                     getRaffle();
-                }   
+                }
             }
 			else setTimeout(function(){location.reload();}, 300000);
         }
-		
+
         getRaffle();
     }
 
